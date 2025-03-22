@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>هشدار امنیتی</title>
+    <style>
+        body {
+            background-color: black;
+            color: red;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            direction: rtl;
+        }
+        h1 {
+            font-size: 40px;
+            margin-top: 20%;
+        }
+        p {
+            font-size: 20px;
+        }
+        button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body onload="startPrank()">
+
+    <h1>⚠ سیستم شما در خطر است! ⚠</h1>
+    <p>تلفن شما تحت کنترل قرار گرفته است...</p>
+    <button onclick="exitWarning()">خروج از سیستم</button>
+
+    <audio id="alarmSound" loop>
+        <source src="https://sedatoseda.com/sound/screaming-girls.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        function startPrank() {
+            // تمام صفحه کردن در موبایل
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) {
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) {
+                document.documentElement.webkitRequestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) {
+                document.documentElement.msRequestFullscreen();
+            }
+
+            // جلوگیری از خروج
+            window.onbeforeunload = function() {
+                return "خروج از این صفحه ممکن است به اطلاعات شما آسیب برساند!";
+            };
+
+            // جلوگیری از دکمه بازگشت در اندروید
+            window.history.pushState(null, null, document.URL);
+            window.addEventListener("popstate", function () {
+                window.history.pushState(null, null, document.URL);
+                alert("⛔ خروج از این صفحه ممکن نیست!");
+            });
+
+            // ویبره ممتد در گوشی
+            if (navigator.vibrate) {
+                setInterval(() => {
+                    navigator.vibrate([500, 500, 500]);
+                }, 3000);
+            }
+
+            // پخش صدای آژیر
+            let sound = document.getElementById("alarmSound");
+            sound.play().catch(error => console.log("پخش صدا مسدود شد: " + error));
+
+            // نمایش هشدارهای پشت سر هم
+            setInterval(() => {
+                alert("⚠ تلفن شما در خطر است! برای محافظت اقدام کنید.");
+            }, 3000);
+        }
+
+        function exitWarning() {
+            alert("⛔ خروج غیرمجاز! سیستم شما در حال هک شدن است!");
+            let sound = new Audio("https://sedatoseda.com/sound/screaming-girls.mp3");
+            sound.play();
+            if (navigator.vibrate) {
+                navigator.vibrate([1000, 1000, 1000]);
+            }
+        }
+    </script>
+
+</body>
+</html>
